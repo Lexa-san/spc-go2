@@ -31,7 +31,7 @@ func main() {
 	}
 
 	//1. Превратим профессора в последовательность байтов
-	byteArr, err := json.MarshalIndent(prof1, "", "   ")
+	byteArr, err := json.MarshalIndent(prof1, "", "  ")
 	if err != nil {
 		log.Fatal(err)
 	}
