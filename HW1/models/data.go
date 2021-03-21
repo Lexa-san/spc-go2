@@ -1,7 +1,9 @@
 package models
 
+import "log"
+
 var (
-	DB     []Item
+	DB     map[int]Item
 	LastId int
 )
 
@@ -13,56 +15,64 @@ type Item struct {
 }
 
 func init() {
+	DB = make(map[int]Item)
+	log.Println("HW1: init DB:", DB)
+	id := GenerateNextId()
 	item := Item{
-		ID:     GetNextId(),
+		ID:     id,
 		Title:  "Тапочки",
 		Amount: 100,
 		Price:  19.99,
 	}
-	DB = append(DB, item)
-
+	DB[id] = item
+	log.Println("HW1: add first item to DB:", DB)
 }
 
-func GetNextId() int {
+// Generate nex ID that can be used to new Item in DB
+func GenerateNextId() int {
 	LastId++
 	return LastId
 }
 
+// Find Item in DB by ID
 func FindItemById(id int) (Item, bool) {
-	var item Item
-	var found bool
-	for _, b := range DB {
-		if b.ID == id {
-			item = b
-			found = true
-			break
-		}
-	}
+	item, found := DB[id]
 	return item, found
 }
 
+// Add a new Item to DB and return its ID
+func AddItem(item Item) (id int, err error) {
+	item.ID = GenerateNextId()
+	DB[item.ID] = item
+	return item.ID, nil
+}
+
+// Delete Item from DB by ID
 func DelItemById(id int) bool {
 	var found bool
-	for i, b := range DB {
-		if b.ID == id {
-			found = true
-			DB[i] = DB[len(DB)-1]
-			DB = DB[:len(DB)-1]
-			break
-		}
+	if _, ok := DB[id]; ok {
+		found = true
+		delete(DB, id)
 	}
 	return found
 }
 
+// update Item in DB by ID
 func UpdateItemById(id int, item Item) bool {
 	var found bool
-	for i, b := range DB {
-		if b.ID == id {
-			found = true
-			item.ID = b.ID
-			DB[i] = item
-			break
-		}
+	if oldItem, ok := DB[id]; ok {
+		found = true
+		item.ID = oldItem.ID
+		DB[id] = item
 	}
 	return found
+}
+
+// convert DB from map to slice to be able to create JSON
+func GetDBAsSlice() []Item {
+	result := make([]Item, 0, len(DB))
+	for _, item := range DB {
+		result = append(result, item)
+	}
+	return result
 }

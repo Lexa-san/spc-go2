@@ -46,8 +46,15 @@ func CreateItem(writer http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	item.ID = models.GetNextId()
-	models.DB = append(models.DB, item)
+	var newId int
+	if newId, err = models.AddItem(item); err != nil {
+		log.Println("HW1: error with store new Item in DB:", err)
+		msg := models.Message{Message: "error with store new Item"}
+		writer.WriteHeader(500)
+		json.NewEncoder(writer).Encode(msg)
+		return
+	}
+	item, _ = models.FindItemById(newId)
 
 	writer.WriteHeader(201)
 	json.NewEncoder(writer).Encode(item)
@@ -84,9 +91,9 @@ func UpdateItemById(writer http.ResponseWriter, request *http.Request) {
 	ok = models.UpdateItemById(id, newItem)
 	if !ok {
 		log.Println("HW1: item was not updated. id:", id)
-		writer.WriteHeader(204)
-		//msg := models.Message{Message: "item with that ID was not updated in database"}
-		//json.NewEncoder(writer).Encode(msg)
+		writer.WriteHeader(500)
+		msg := models.Message{Message: "item with that ID was not updated in database"}
+		json.NewEncoder(writer).Encode(msg)
 		return
 	}
 	writer.WriteHeader(200)
@@ -117,10 +124,10 @@ func DeleteItemById(writer http.ResponseWriter, request *http.Request) {
 
 	ok = models.DelItemById(id)
 	if !ok {
-		log.Println("HW1: item not found in data base . id :", id)
-		writer.WriteHeader(204)
-		//msg := models.Message{Message: "item with that ID does not deleted in database"}
-		//json.NewEncoder(writer).Encode(msg)
+		log.Println("HW1: item was not deleted in data base . id :", id)
+		writer.WriteHeader(500)
+		msg := models.Message{Message: "item with that ID was not deleted in database"}
+		json.NewEncoder(writer).Encode(msg)
 		return
 	}
 	writer.WriteHeader(200)
