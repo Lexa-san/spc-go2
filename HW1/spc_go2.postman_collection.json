@@ -1,0 +1,309 @@
+{
+	"info": {
+		"_postman_id": "6245fb7e-7d97-41fb-a9f4-f0615f00a2ac",
+		"name": "spc_go2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "3.Trash_API",
+			"item": [
+				{
+					"name": "GET All Pizzas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}/pizzas",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"pizzas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Pizza by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}/pizza/4",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"pizza",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "4.SemiTrash_API",
+			"item": [
+				{
+					"name": "GET All Books",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}{{API_VER}}/books",
+							"host": [
+								"{{DOMAIN}}{{API_VER}}"
+							],
+							"path": [
+								"books"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Book by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}{{API_VER}}/book/2",
+							"host": [
+								"{{DOMAIN}}{{API_VER}}"
+							],
+							"path": [
+								"book",
+								"2"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE Book by ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}{{API_VER}}/book/4",
+							"host": [
+								"{{DOMAIN}}{{API_VER}}"
+							],
+							"path": [
+								"book",
+								"4"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE New Book",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 2,\n    \"title\": \"some new book 3\",\n    \"author\": {\n        \"name\": \"Vasya\",\n        \"last_name\": \"Pupkin\",\n        \"born_year\": 1992\n    },\n    \"year_published\": 2021\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DOMAIN}}{{API_VER}}/book",
+							"host": [
+								"{{DOMAIN}}{{API_VER}}"
+							],
+							"path": [
+								"book"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE New Book",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 10,\n    \"title\": \"one more some new book 2\",\n    \"author\": {\n        \"name\": \"Vasy2a\",\n        \"last_name\": \"Pupkin2\",\n        \"born_year\": 1990\n    },\n    \"year_published\": 2020\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DOMAIN}}{{API_VER}}/book/2",
+							"host": [
+								"{{DOMAIN}}{{API_VER}}"
+							],
+							"path": [
+								"book",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "HW1",
+			"item": [
+				{
+					"name": "GET All Items",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}{{API_VER}}/items",
+							"host": [
+								"{{DOMAIN}}{{API_VER}}"
+							],
+							"path": [
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Item by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}{{API_VER}}/item/2",
+							"host": [
+								"{{DOMAIN}}{{API_VER}}"
+							],
+							"path": [
+								"item",
+								"2"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE Item by ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}{{API_VER}}/item/2",
+							"host": [
+								"{{DOMAIN}}{{API_VER}}"
+							],
+							"path": [
+								"item",
+								"2"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE New Item",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\" : \"New Item\",\n    \"amount\" : 100,\n    \"price\" : 12.55\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DOMAIN}}{{API_VER}}/item",
+							"host": [
+								"{{DOMAIN}}{{API_VER}}"
+							],
+							"path": [
+								"item"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE New Book",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\" : \"one more New Item\",\n    \"amount\" : 200,\n    \"price\" : 22.65\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DOMAIN}}{{API_VER}}/item/3",
+							"host": [
+								"{{DOMAIN}}{{API_VER}}"
+							],
+							"path": [
+								"item",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "DOMAIN",
+			"value": "http://localhost:8080"
+		},
+		{
+			"key": "API_VER",
+			"value": "/api/v1"
+		}
+	]
+}
