@@ -18,7 +18,7 @@ func GetAllItems(writer http.ResponseWriter, request *http.Request) {
 
 	if len(models.DB) == 0 {
 		writer.WriteHeader(403)
-		json.NewEncoder(writer).Encode(models.Error{Error: "No one items found in store back"})
+		json.NewEncoder(writer).Encode(models.Message{Error: "No one items found in store back"})
 		return
 	}
 	writer.WriteHeader(200)
