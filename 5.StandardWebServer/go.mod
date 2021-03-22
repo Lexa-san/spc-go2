@@ -1,4 +1,4 @@
-module github.com/Lexa-san/spc-go2/6.ServerAndDB
+module github.com/Lexa-san/spc-go2/5.StandardWebServer
 
 go 1.16
 
