@@ -247,7 +247,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\" : \"New Item\",\n    \"amount\" : 100,\n    \"price\" : 12.55\n}",
+							"raw": "{\n    \"title\" : \"New Item2\",\n    \"amount\" : 200,\n    \"price\" : 13.55\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -255,12 +255,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{DOMAIN}}{{API_VER}}/item",
+							"raw": "{{DOMAIN}}{{API_VER}}/item/2",
 							"host": [
 								"{{DOMAIN}}{{API_VER}}"
 							],
 							"path": [
-								"item"
+								"item",
+								"2"
 							]
 						}
 					},
@@ -281,13 +282,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{DOMAIN}}{{API_VER}}/item/3",
+							"raw": "{{DOMAIN}}{{API_VER}}/item/1",
 							"host": [
 								"{{DOMAIN}}{{API_VER}}"
 							],
 							"path": [
 								"item",
-								"3"
+								"1"
 							]
 						}
 					},

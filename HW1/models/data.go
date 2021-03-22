@@ -1,6 +1,9 @@
 package models
 
-import "log"
+import (
+	"errors"
+	"log"
+)
 
 var (
 	DB     map[int]Item
@@ -41,31 +44,34 @@ func FindItemById(id int) (Item, bool) {
 }
 
 // Add a new Item to DB and return its ID
-func AddItem(item Item) (id int, err error) {
-	item.ID = GenerateNextId()
-	DB[item.ID] = item
-	return item.ID, nil
+func AddItem(item Item, id int) error {
+	if _, ok := DB[id]; ok {
+		return errors.New("Item with that id already exists")
+	}
+
+	item.ID = id
+	DB[id] = item
+	return nil
 }
 
 // Delete Item from DB by ID
-func DelItemById(id int) bool {
-	var found bool
-	if _, ok := DB[id]; ok {
-		found = true
-		delete(DB, id)
+func DelItemById(id int) error {
+	if _, ok := DB[id]; !ok {
+		return errors.New("Item with that id not found")
 	}
-	return found
+	delete(DB, id)
+	return nil
 }
 
 // update Item in DB by ID
-func UpdateItemById(id int, item Item) bool {
-	var found bool
-	if oldItem, ok := DB[id]; ok {
-		found = true
-		item.ID = oldItem.ID
-		DB[id] = item
+func UpdateItemById(id int, item Item) (Item, error) {
+	if _, ok := DB[id]; !ok {
+		return Item{}, errors.New("Item with that id not found")
 	}
-	return found
+
+	item.ID = id
+	DB[id] = item
+	return DB[id], nil
 }
 
 // convert DB from map to slice to be able to create JSON

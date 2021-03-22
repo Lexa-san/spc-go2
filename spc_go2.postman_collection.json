@@ -122,7 +122,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id\": 2,\n    \"title\": \"some new book 2\",\n    \"author\": {\n        \"name\": \"Vasya\",\n        \"last_name\": \"Pupkin\",\n        \"born_year\": 1992\n    },\n    \"year_published\": 2021\n}",
+							"raw": "{\n    \"id\": 2,\n    \"title\": \"some new book 3\",\n    \"author\": {\n        \"name\": \"Vasya\",\n        \"last_name\": \"Pupkin\",\n        \"born_year\": 1992\n    },\n    \"year_published\": 2021\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -172,7 +172,129 @@
 		},
 		{
 			"name": "HW1",
-			"item": []
+			"item": [
+				{
+					"name": "GET All Items",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}{{API_VER}}/items",
+							"host": [
+								"{{DOMAIN}}{{API_VER}}"
+							],
+							"path": [
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Item by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}{{API_VER}}/item/2",
+							"host": [
+								"{{DOMAIN}}{{API_VER}}"
+							],
+							"path": [
+								"item",
+								"2"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE Item by ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}{{API_VER}}/item/2",
+							"host": [
+								"{{DOMAIN}}{{API_VER}}"
+							],
+							"path": [
+								"item",
+								"2"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE New Item",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\" : \"New Item2\",\n    \"amount\" : 200,\n    \"price\" : 13.55\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DOMAIN}}{{API_VER}}/item/2",
+							"host": [
+								"{{DOMAIN}}{{API_VER}}"
+							],
+							"path": [
+								"item",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE New Book",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\" : \"one more New Item\",\n    \"amount\" : 200,\n    \"price\" : 22.65\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DOMAIN}}{{API_VER}}/item/1",
+							"host": [
+								"{{DOMAIN}}{{API_VER}}"
+							],
+							"path": [
+								"item",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"variable": [

@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -16,7 +17,7 @@ func GetItemById(writer http.ResponseWriter, request *http.Request) {
 	if err != nil {
 		log.Println("HW1: error while parsing happend:", err)
 		writer.WriteHeader(400)
-		msg := models.Message{Message: "do not use parameter ID as uncasted to int type"}
+		msg := models.Error{Error: "do not use parameter ID as uncasted to int type"}
 		json.NewEncoder(writer).Encode(msg)
 		return
 	}
@@ -25,7 +26,7 @@ func GetItemById(writer http.ResponseWriter, request *http.Request) {
 	log.Println("HW1: Get item with id:", id)
 	if !ok {
 		writer.WriteHeader(404)
-		msg := models.Message{Message: "item with that ID does not exists in database"}
+		msg := models.Error{Error: "Item with that id not found"}
 		json.NewEncoder(writer).Encode(msg)
 	} else {
 		writer.WriteHeader(200)
@@ -36,28 +37,40 @@ func GetItemById(writer http.ResponseWriter, request *http.Request) {
 func CreateItem(writer http.ResponseWriter, request *http.Request) {
 	initHeaders(writer)
 	log.Println("HW1: Creating new item ....")
-	var item models.Item
+	var (
+		item models.Item
+		id   int
+		err  error
+	)
 
-	err := json.NewDecoder(request.Body).Decode(&item)
+	id, err = strconv.Atoi(mux.Vars(request)["id"])
 	if err != nil {
-		msg := models.Message{Message: "provideed json file is invalid"}
+		log.Println("HW1: error while parsing happend:", err)
+		writer.WriteHeader(400)
+		msg := models.Error{Error: "do not use parameter ID as uncasted to int type"}
+		json.NewEncoder(writer).Encode(msg)
+		return
+	}
+
+	err = json.NewDecoder(request.Body).Decode(&item)
+	if err != nil {
+		msg := models.Error{Error: "provideed json file is invalid"}
 		writer.WriteHeader(400)
 		json.NewEncoder(writer).Encode(msg)
 		return
 	}
 
-	var newId int
-	if newId, err = models.AddItem(item); err != nil {
-		log.Println("HW1: error with store new Item in DB:", err)
-		msg := models.Message{Message: "error with store new Item"}
-		writer.WriteHeader(500)
+	if err = models.AddItem(item, id); err != nil {
+		log.Println("HW1: error with store new Item:", err)
+		writer.WriteHeader(400)
+		msg := models.Error{Error: fmt.Sprint(err)}
 		json.NewEncoder(writer).Encode(msg)
 		return
 	}
-	item, _ = models.FindItemById(newId)
 
 	writer.WriteHeader(201)
-	json.NewEncoder(writer).Encode(item)
+	msg := models.Message{Message: "Item created"}
+	json.NewEncoder(writer).Encode(msg)
 }
 
 func UpdateItemById(writer http.ResponseWriter, request *http.Request) {
@@ -67,7 +80,7 @@ func UpdateItemById(writer http.ResponseWriter, request *http.Request) {
 	if err != nil {
 		log.Println("HW1: error while parsing happend:", err)
 		writer.WriteHeader(400)
-		msg := models.Message{Message: "do not use parameter ID as uncasted to int type"}
+		msg := models.Error{Error: "do not use parameter ID as uncasted to int type"}
 		json.NewEncoder(writer).Encode(msg)
 		return
 	}
@@ -76,29 +89,27 @@ func UpdateItemById(writer http.ResponseWriter, request *http.Request) {
 	if !ok {
 		log.Println("HW1: item not found in data base . id :", id)
 		writer.WriteHeader(404)
-		msg := models.Message{Message: "item with that ID does not exists in database"}
+		msg := models.Error{Error: "item with that ID does not exists in database"}
 		json.NewEncoder(writer).Encode(msg)
 		return
 	}
 	err = json.NewDecoder(request.Body).Decode(&newItem)
 	if err != nil {
-		msg := models.Message{Message: "provideed json file is invalid"}
+		msg := models.Error{Error: "provideed json file is invalid"}
 		writer.WriteHeader(400)
 		json.NewEncoder(writer).Encode(msg)
 		return
 	}
 
-	ok = models.UpdateItemById(id, newItem)
-	if !ok {
-		log.Println("HW1: item was not updated. id:", id)
-		writer.WriteHeader(500)
-		msg := models.Message{Message: "item with that ID was not updated in database"}
+	if newItem, err = models.UpdateItemById(id, newItem); err != nil {
+		log.Println("HW1: item was not updated. id:", err)
+		writer.WriteHeader(404)
+		msg := models.Error{Error: fmt.Sprint(err)}
 		json.NewEncoder(writer).Encode(msg)
 		return
 	}
-	writer.WriteHeader(200)
-	msg := models.Message{Message: "successfully updated requested item"}
-	json.NewEncoder(writer).Encode(msg)
+	writer.WriteHeader(202)
+	json.NewEncoder(writer).Encode(newItem)
 }
 
 func DeleteItemById(writer http.ResponseWriter, request *http.Request) {
@@ -108,29 +119,28 @@ func DeleteItemById(writer http.ResponseWriter, request *http.Request) {
 	if err != nil {
 		log.Println("HW1: error while parsing happend:", err)
 		writer.WriteHeader(400)
-		msg := models.Message{Message: "do not use parameter ID as uncasted to int type"}
+		msg := models.Error{Error: "do not use parameter ID as uncasted to int type"}
 		json.NewEncoder(writer).Encode(msg)
 		return
 	}
 
 	_, ok := models.FindItemById(id)
 	if !ok {
-		log.Println("HW1: item not found in database. id :", id)
+		log.Println("HW1: item was not found. id:", id)
 		writer.WriteHeader(404)
-		msg := models.Message{Message: "item with that ID does not exists in database"}
+		msg := models.Error{Error: "Item with that id not found"}
 		json.NewEncoder(writer).Encode(msg)
 		return
 	}
 
-	ok = models.DelItemById(id)
-	if !ok {
-		log.Println("HW1: item was not deleted in data base . id :", id)
+	if err = models.DelItemById(id); err != nil {
+		log.Println("HW1: item was not deleted. id:", id)
 		writer.WriteHeader(500)
-		msg := models.Message{Message: "item with that ID was not deleted in database"}
+		msg := models.Error{Error: fmt.Sprint(err)}
 		json.NewEncoder(writer).Encode(msg)
 		return
 	}
-	writer.WriteHeader(200)
-	msg := models.Message{Message: "successfully deleted requested item"}
+	writer.WriteHeader(202)
+	msg := models.Message{Message: "Item deleted"}
 	json.NewEncoder(writer).Encode(msg)
 }
