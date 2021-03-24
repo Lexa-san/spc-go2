@@ -20,4 +20,15 @@ func (a *API) configureRouterField() {
 	a.router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Hello! This is API of 9.TaskSW!"))
 	})
+	a.router.HandleFunc(prefix, func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("Hello! This is API v1.0 of 9.TaskSW!"))
+	})
+
+	a.router.HandleFunc(prefix+"/q", a.GetQuadratic).Methods("gost")
+	a.router.HandleFunc(prefix+"/grab", a.GrabQuadratic).Methods("POST")
+	a.router.HandleFunc(prefix+"/solve", a.SolveQuadratic).Methods("GET")
 }
+
+//func Store(q *models.Quadratic) () {
+//
+//}
