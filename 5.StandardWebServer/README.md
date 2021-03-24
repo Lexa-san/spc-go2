@@ -2,7 +2,7 @@
 
 ### Шаг 1. Инициализация go mod
 ```
-go mod init github.com/vlasove/go2/5.StandardWebServer
+go mod init github.com/Lexa-san/spc-go2/5.StandardWebServer
 ```
 
 ### Шаг 2. Где найти стандартные шаблоны?
