@@ -300,51 +300,6 @@
 			"name": "9.TaskSW",
 			"item": [
 				{
-					"name": "GET test",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{DOMAIN}}",
-							"host": [
-								"{{DOMAIN}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "GET test v1.0",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{DOMAIN}}{{API_VER}}",
-							"host": [
-								"{{DOMAIN}}{{API_VER}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "GET Quadratic",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{DOMAIN}}{{API_VER}}/q",
-							"host": [
-								"{{DOMAIN}}{{API_VER}}"
-							],
-							"path": [
-								"q"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "GET Solve Quadratic",
 					"request": {
 						"method": "GET",
@@ -379,6 +334,223 @@
 								"grab"
 							]
 						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "10.JWTAuth",
+			"item": [
+				{
+					"name": "get All articles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/articles",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"articles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create article",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\" : \"Third article\", \n    \"author\" : \"Alex Ivanov\",\n    \"content\" : \"New content for third article\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/articles",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"articles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get article by Id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6dHJ1ZSwiZXhwIjoxNjE2NjE3NDAzLCJuYW1lIjoiYWRtaW4ifQ.mP33DwtCDqQzA0cs9tYOEKtfG5N_xuWaGxT7IqiwTI8",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/articles/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"articles",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update Article by ID",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\" : \"Updated title\",\r\n    \"author\" : \"Updated Author\",\r\n    \"content\" : \"Updated content\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/articles/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"articles",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete article by id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/articles/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"articles",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register user",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"login\" : \"admin\",\r\n    \"password\" : \"admin\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/user/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "auth",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"login\" : \"admin\",\r\n    \"password\" : \"admin\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/user/auth",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"auth"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "HW2",
+			"item": [
+				{
+					"name": "Test API",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": null
 					},
 					"response": []
 				}
