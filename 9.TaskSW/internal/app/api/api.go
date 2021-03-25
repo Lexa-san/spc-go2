@@ -1,6 +1,7 @@
 package api
 
 import (
+	"github.com/Lexa-san/spc-go2/9.TaskSW/internal/app/models"
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
 	"net/http"
@@ -8,8 +9,8 @@ import (
 
 var (
 	prefix string = "/api/v1"
-	//qStore *models.Quadratic
-	DB map[string]int
+	//DB map[string]int
+	DB *models.Quadratic
 )
 
 //Base API server instance description
@@ -29,6 +30,10 @@ func New(config *Congig) *API {
 	}
 }
 
+func NewDB() *models.Quadratic {
+	return new(models.Quadratic)
+}
+
 // Start http server/configure loggers, router, database connection and etc....
 func (api *API) Start() error {
 
@@ -39,7 +44,9 @@ func (api *API) Start() error {
 	//Подтверждение того, что логгер сконфигурирован
 	api.logger.Info("starting api server at port:", api.config.BindAddr)
 
-	DB = make(map[string]int)
+	//DB = make(map[string]int)
+	DB = NewDB()
+	api.logger.Info("DB pointer:", DB, "DB value:", *DB)
 
 	//Конфигурируем маршрутизатор
 	api.configureRouterField()

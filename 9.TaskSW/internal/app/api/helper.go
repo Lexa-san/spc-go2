@@ -24,11 +24,7 @@ func (a *API) configureRouterField() {
 		w.Write([]byte("Hello! This is API v1.0 of 9.TaskSW!"))
 	})
 
-	a.router.HandleFunc(prefix+"/q", a.GetQuadratic).Methods("gost")
+	//a.router.HandleFunc(prefix+"/q", a.GetQuadratic).Methods("GET")
 	a.router.HandleFunc(prefix+"/grab", a.GrabQuadratic).Methods("POST")
 	a.router.HandleFunc(prefix+"/solve", a.SolveQuadratic).Methods("GET")
 }
-
-//func Store(q *models.Quadratic) () {
-//
-//}
