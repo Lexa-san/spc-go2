@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	//"github.com/Lexa-san/spc-go2/HW2/internal/app/middleware"
-	//"github.com/Lexa-san/spc-go2/HW2/store"
+	"github.com/Lexa-san/spc-go2/HW2/store"
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
 )
@@ -19,7 +19,7 @@ type APIServer struct {
 	config *Config
 	logger *logrus.Logger
 	router *mux.Router
-	//store  *store.Store
+	store  *store.Store
 }
 
 //APIServer constructor
@@ -36,11 +36,11 @@ func (s *APIServer) Start() error {
 	if err := s.configureLogger(); err != nil {
 		return err
 	}
-	s.logger.Info("starting api server at port :", s.config.BindAddr)
+	s.logger.Info("starting api server at port: ", s.config.BindAddr)
 	s.configureRouter()
-	//if err := s.configureStore(); err != nil {
-	//	return err
-	//}
+	if err := s.configureStore(); err != nil {
+		return err
+	}
 	return http.ListenAndServe(s.config.BindAddr, s.router)
 }
 
@@ -58,7 +58,7 @@ func (s *APIServer) configureLogger() error {
 //func for configure Router
 func (s *APIServer) configureRouter() {
 	s.router.HandleFunc(prefix, s.GetIndex).Methods("GET")
-	//s.router.HandleFunc(prefix+"/articles", s.GetAllArticles).Methods("GET")
+	s.router.HandleFunc(prefix+"/stock", s.GetAllCars).Methods("GET")
 	////Было до JWT
 	////s.router.HandleFunc(prefix+"/articles"+"/{id}", s.GetArticleById).Methods("GET")
 	////Теперь требует наличия JWT
@@ -73,12 +73,12 @@ func (s *APIServer) configureRouter() {
 	//s.router.HandleFunc(prefix+"/user/auth", s.PostToAuth).Methods("POST")
 }
 
-////configureStore method
-//func (s *APIServer) configureStore() error {
-//	st := store.New(s.config.Store)
-//	if err := st.Open(); err != nil {
-//		return err
-//	}
-//	s.store = st
-//	return nil
-//}
+//configureStore method
+func (s *APIServer) configureStore() error {
+	st := store.New(s.config.Store)
+	if err := st.Open(); err != nil {
+		return err
+	}
+	s.store = st
+	return nil
+}

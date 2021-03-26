@@ -26,3 +26,38 @@ func (api *APIServer) GetIndex(writer http.ResponseWriter, req *http.Request) {
 	}
 	json.NewEncoder(writer).Encode(msg)
 }
+
+func (api *APIServer) GetAllCars(writer http.ResponseWriter, req *http.Request) {
+	api.logger.Info("Get All Cars GET /stock")
+
+	initHeaders(writer)
+
+	cars, err := api.store.Car().SelectAll()
+
+	if err != nil {
+		api.logger.Error(err)
+		msg := Message{
+			StatusCode: 501,
+			Message:    "We have some troubles to accessing cars in database. Try later",
+			IsError:    true,
+		}
+		writer.WriteHeader(501)
+		json.NewEncoder(writer).Encode(msg)
+		return
+	}
+
+	//we found nothing
+	if len(cars) == 0 {
+		msg := Message{
+			StatusCode: 400,
+			Message:    "No one autos found in DataBase",
+			IsError:    true,
+		}
+		writer.WriteHeader(400)
+		json.NewEncoder(writer).Encode(msg)
+		return
+	}
+
+	writer.WriteHeader(http.StatusOK)
+	//json.NewEncoder(writer).Encode(cars)
+}

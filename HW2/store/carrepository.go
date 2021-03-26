@@ -1,0 +1,104 @@
+package store
+
+import (
+	"fmt"
+	"log"
+
+	"github.com/Lexa-san/spc-go2/HW2/internal/app/models"
+)
+
+type CarRepository struct {
+	store *Store
+}
+
+var (
+	tableCar string = "car"
+)
+
+//For POST request
+func (car *CarRepository) Create(c *models.Car) (*models.Car, error) {
+	query := fmt.Sprintf("INSERT INTO %s (mark, max_speed, distance, stock, handler) "+
+		"VALUES ($1, $2, $3, $4, $5) RETURNING id", tableCar)
+	if err := car.store.db.QueryRow(query, c.Mark, c.MaxSpeed, c.Distance, c.Stock, c.Handler).Scan(&c.ID); err != nil {
+		return nil, err
+	}
+	return c, nil
+}
+
+//For DELETE request
+func (car *CarRepository) DeleteById(id int) (*models.Car, error) {
+	cCar, ok, err := car.SelectOneById(id)
+	if err != nil {
+		return nil, err
+	}
+	if ok {
+		query := fmt.Sprintf("delete from %s where id=$1", tableCar)
+		_, err = car.store.db.Exec(query, id)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return cCar, nil
+}
+
+//Helper fo Find by id and GET by id request
+//func (car *CarRepository) FindCarById(id int) (*models.Car, bool, error) {
+//	cCars, err := car.SelectAll()
+//	founded := false
+//	if err != nil {
+//		return nil, founded, err
+//	}
+//	var cCarFinded *models.Car
+//	for _, a := range cCars {
+//		if a.ID == id {
+//			cCarFinded = a
+//			founded = true
+//		}
+//	}
+//
+//	return cCarFinded, founded, nil
+//
+//}
+
+//Get all request and helper for FindByID
+func (car *CarRepository) SelectAll() ([]*models.Car, error) {
+	query := fmt.Sprintf("SELECT c.car_id, c.mark, max_speed, c.distance, c.handler, c.stock FROM %s as c", tableCar)
+	rows, err := car.store.db.Query(query)
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+	cCars := make([]*models.Car, 0)
+	for rows.Next() {
+		a := models.Car{}
+		err := rows.Scan(&a.ID, &a.Mark, &a.MaxSpeed, &a.Distance, &a.Handler, &a.Stock)
+		if err != nil {
+			log.Println(err)
+			continue
+		}
+		cCars = append(cCars, &a)
+	}
+	return cCars, nil
+}
+
+func (car *CarRepository) SelectOneById(id int) (*models.Car, bool, error) {
+	a := models.Car{}
+	query := fmt.Sprintf("SELECT "+
+		"c.car_id, "+
+		"c.mark,"+
+		"c.max_speed, "+
+		"c.distance, "+
+		"c.handler. "+
+		"c.stock "+
+		"FROM %s as c", tableCar)
+
+	err := car.store.db.QueryRow(query).Scan(&a.ID, &a.Mark, &a.MaxSpeed, &a.Distance, &a.Handler, &a.Stock)
+	if err != nil {
+		return &a, false, err
+	}
+
+	return &a, true, nil
+
+}
