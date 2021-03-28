@@ -1,12 +1,11 @@
 package apiserver
 
 import (
-	"net/http"
-
-	//"github.com/Lexa-san/spc-go2/HW2/internal/app/middleware"
+	"github.com/Lexa-san/spc-go2/HW2/internal/app/middleware"
 	"github.com/Lexa-san/spc-go2/HW2/store"
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
+	"net/http"
 )
 
 var (
@@ -57,19 +56,24 @@ func (s *APIServer) configureLogger() error {
 
 //func for configure Router
 func (s *APIServer) configureRouter() {
+	//test method to check API version
 	s.router.HandleFunc(prefix, s.GetIndex).Methods("GET")
-	s.router.HandleFunc(prefix+"/stock", s.GetAllCars).Methods("GET")
-	////Было до JWT
-	////s.router.HandleFunc(prefix+"/articles"+"/{id}", s.GetArticleById).Methods("GET")
-	////Теперь требует наличия JWT
-	//s.router.Handle(prefix+"/articles"+"/{id}", middleware.JwtMiddleware.Handler(
-	//	http.HandlerFunc(s.GetArticleById),
-	//)).Methods("GET")
+
+	//user methods
+	s.router.HandleFunc(prefix+"/register", s.PostUserRegister).Methods("POST")
+	s.router.HandleFunc(prefix+"/auth", s.PostToAuth).Methods("POST")
+
+	//method with auth
+	s.router.Handle(prefix+"/stock", middleware.JwtMiddleware.Handler(
+		http.HandlerFunc(s.GetAllCars),
+	)).Methods("GET")
+	s.router.Handle(prefix+"/auto/{mark}", middleware.JwtMiddleware.Handler(
+		http.HandlerFunc(s.GetCarByMark),
+	)).Methods("GET")
+
 	////
 	//s.router.HandleFunc(prefix+"/articles"+"/{id}", s.DeleteArticleById).Methods("DELETE")
 	//s.router.HandleFunc(prefix+"/articles", s.PostArticle).Methods("POST")
-	s.router.HandleFunc(prefix+"/register", s.PostUserRegister).Methods("POST")
-	s.router.HandleFunc(prefix+"/auth", s.PostToAuth).Methods("POST")
 }
 
 //configureStore method

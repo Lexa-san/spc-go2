@@ -48,3 +48,26 @@ func alertBadAuthCredentials(api *APIServer, writer http.ResponseWriter) {
 	writer.WriteHeader(404)
 	json.NewEncoder(writer).Encode(msg)
 }
+
+func alertTokenGenerate(api *APIServer, writer http.ResponseWriter, err error) {
+	api.logger.Error("Can not claim jwt-token. Err: ", err)
+	msg := Message{
+		StatusCode: 500,
+		Message:    "We have some troubles. Try again",
+		IsError:    true,
+	}
+	writer.WriteHeader(500)
+	json.NewEncoder(writer).Encode(msg)
+}
+
+func alertCarDoesNotExist(api *APIServer, writer http.ResponseWriter) {
+	api.logger.Info("Can not find article with that ID in database")
+	msg := Message{
+		StatusCode: 404,
+		Message:    "Car with that mark not found",
+		IsError:    true,
+	}
+
+	writer.WriteHeader(404)
+	json.NewEncoder(writer).Encode(msg)
+}

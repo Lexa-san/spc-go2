@@ -6,6 +6,7 @@ import (
 	"github.com/Lexa-san/spc-go2/HW2/internal/app/middleware"
 	"github.com/Lexa-san/spc-go2/HW2/internal/app/models"
 	"github.com/form3tech-oss/jwt-go"
+	"github.com/gorilla/mux"
 	"net/http"
 	"time"
 )
@@ -32,42 +33,6 @@ func (api *APIServer) GetIndex(writer http.ResponseWriter, req *http.Request) {
 		IsError:    false,
 	}
 	json.NewEncoder(writer).Encode(msg)
-}
-
-//Get all cars
-func (api *APIServer) GetAllCars(writer http.ResponseWriter, req *http.Request) {
-	api.logger.Info("Get All Cars GET /api/v1/stock")
-
-	initHeaders(writer)
-
-	cars, err := api.store.Car().SelectAll()
-
-	if err != nil {
-		api.logger.Error(err)
-		msg := Message{
-			StatusCode: 501,
-			Message:    "We have some troubles to accessing cars in database. Try later",
-			IsError:    true,
-		}
-		writer.WriteHeader(501)
-		json.NewEncoder(writer).Encode(msg)
-		return
-	}
-
-	//we found nothing
-	if len(cars) == 0 {
-		msg := Message{
-			StatusCode: 400,
-			Message:    "No one autos found in DataBase",
-			IsError:    true,
-		}
-		writer.WriteHeader(400)
-		json.NewEncoder(writer).Encode(msg)
-		return
-	}
-
-	writer.WriteHeader(http.StatusOK)
-	//json.NewEncoder(writer).Encode(cars)
 }
 
 //Register user
@@ -149,7 +114,7 @@ func (api *APIServer) PostToAuth(writer http.ResponseWriter, req *http.Request) 
 	//generate JWT token
 	token := jwt.New(jwt.SigningMethodHS256)
 	claims := token.Claims.(jwt.MapClaims)
-	claims["exp"] = time.Now().Add(time.Minute * 2).Unix()
+	claims["exp"] = time.Now().Add(time.Hour * 1).Unix()
 	claims["admin"] = true
 	claims["name"] = userInDB.Username
 	tokenString, err := token.SignedString(middleware.SecretKey)
@@ -169,13 +134,56 @@ func (api *APIServer) PostToAuth(writer http.ResponseWriter, req *http.Request) 
 	json.NewEncoder(writer).Encode(msg)
 }
 
-func alertTokenGenerate(api *APIServer, writer http.ResponseWriter, err error) {
-	api.logger.Error("Can not claim jwt-token. Err: ", err)
-	msg := Message{
-		StatusCode: 500,
-		Message:    "We have some troubles. Try again",
-		IsError:    true,
+//Get all cars
+func (api *APIServer) GetAllCars(writer http.ResponseWriter, req *http.Request) {
+	api.logger.Info("Get All Cars GET /api/v1/stock")
+
+	initHeaders(writer)
+
+	cars, err := api.store.Car().SelectAll()
+
+	if err != nil {
+		api.logger.Error(err)
+		msg := Message{
+			StatusCode: 501,
+			Message:    "We have some troubles to accessing cars in database. Try later",
+			IsError:    true,
+		}
+		writer.WriteHeader(501)
+		json.NewEncoder(writer).Encode(msg)
+		return
 	}
-	writer.WriteHeader(500)
-	json.NewEncoder(writer).Encode(msg)
+
+	//we found nothing
+	if len(cars) == 0 {
+		msg := Message{
+			StatusCode: 400,
+			Message:    "No one autos found in DataBase",
+			IsError:    true,
+		}
+		writer.WriteHeader(400)
+		json.NewEncoder(writer).Encode(msg)
+		return
+	}
+
+	writer.WriteHeader(http.StatusOK)
+	json.NewEncoder(writer).Encode(cars)
+}
+
+func (api *APIServer) GetCarByMark(writer http.ResponseWriter, req *http.Request) {
+	initHeaders(writer)
+	api.logger.Info("Get Car by mark /api/v1/auto/{mark}")
+	mark := mux.Vars(req)["mark"]
+	car, ok, err := api.store.Car().SelectOneByMark(mark)
+	if err != nil {
+		alertDBError(api, writer, err)
+		return
+	}
+	if !ok {
+		alertCarDoesNotExist(api, writer)
+		return
+	}
+	writer.WriteHeader(200)
+	json.NewEncoder(writer).Encode(car)
+
 }

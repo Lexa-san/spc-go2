@@ -27,14 +27,14 @@ func (car *CarRepository) Create(c *models.Car) (*models.Car, error) {
 }
 
 //For DELETE request
-func (car *CarRepository) DeleteById(id int) (*models.Car, error) {
-	cCar, ok, err := car.SelectOneById(id)
+func (car *CarRepository) DeleteById(mark string) (*models.Car, error) {
+	cCar, ok, err := car.SelectOneByMark(mark)
 	if err != nil {
 		return nil, err
 	}
 	if ok {
-		query := fmt.Sprintf("delete from %s where id=$1", tableCar)
-		_, err = car.store.db.Exec(query, id)
+		query := fmt.Sprintf("delete from %s where mark=$1", tableCar)
+		_, err = car.store.db.Exec(query, mark)
 		if err != nil {
 			return nil, err
 		}
@@ -84,18 +84,20 @@ func (car *CarRepository) SelectAll() ([]*models.Car, error) {
 	return cCars, nil
 }
 
-func (car *CarRepository) SelectOneById(id int) (*models.Car, bool, error) {
+func (car *CarRepository) SelectOneByMark(mark string) (*models.Car, bool, error) {
 	a := models.Car{}
 	query := fmt.Sprintf("SELECT "+
 		"c.car_id, "+
 		"c.mark,"+
 		"c.max_speed, "+
 		"c.distance, "+
-		"c.handler. "+
+		"c.handler, "+
 		"c.stock "+
-		"FROM %s as c", tableCar)
+		"FROM %s as c "+
+		"WHERE c.mark ilike $1 ", tableCar)
+	log.Println(query, mark)
 
-	err := car.store.db.QueryRow(query).Scan(&a.ID, &a.Mark, &a.MaxSpeed, &a.Distance, &a.Handler, &a.Stock)
+	err := car.store.db.QueryRow(query, mark).Scan(&a.ID, &a.Mark, &a.MaxSpeed, &a.Distance, &a.Handler, &a.Stock)
 	switch {
 	case err == sql.ErrNoRows:
 		return &a, false, nil
