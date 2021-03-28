@@ -187,3 +187,37 @@ func (api *APIServer) GetCarByMark(writer http.ResponseWriter, req *http.Request
 	json.NewEncoder(writer).Encode(car)
 
 }
+
+func (api *APIServer) CreateCar(writer http.ResponseWriter, req *http.Request) {
+	initHeaders(writer)
+	api.logger.Info("Create Car POST /auto/{mark}")
+	var err error
+
+	mark := mux.Vars(req)["mark"]
+	_, ok, err := api.store.Car().SelectOneByMark(mark)
+	if err != nil {
+		alertDBError(api, writer, err)
+		return
+	}
+	if ok {
+		alertCarAlreadyExist(api, writer)
+		return
+	}
+
+	var car models.Car
+	err = json.NewDecoder(req.Body).Decode(&car)
+	if err != nil {
+		alertBadJSON(api, writer, err)
+		return
+	}
+
+	car.Mark = mark
+	a, err := api.store.Car().Create(&car)
+	if err != nil {
+		alertDBError(api, writer, err)
+		return
+	}
+	writer.WriteHeader(201)
+	json.NewEncoder(writer).Encode(a)
+
+}

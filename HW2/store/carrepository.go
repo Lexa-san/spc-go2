@@ -19,7 +19,7 @@ var (
 //For POST request
 func (car *CarRepository) Create(c *models.Car) (*models.Car, error) {
 	query := fmt.Sprintf("INSERT INTO %s (mark, max_speed, distance, stock, handler) "+
-		"VALUES ($1, $2, $3, $4, $5) RETURNING id", tableCar)
+		"VALUES ($1, $2, $3, $4, $5) RETURNING car_id", tableCar)
 	if err := car.store.db.QueryRow(query, c.Mark, c.MaxSpeed, c.Distance, c.Stock, c.Handler).Scan(&c.ID); err != nil {
 		return nil, err
 	}
@@ -95,7 +95,6 @@ func (car *CarRepository) SelectOneByMark(mark string) (*models.Car, bool, error
 		"c.stock "+
 		"FROM %s as c "+
 		"WHERE c.mark ilike $1 ", tableCar)
-	log.Println(query, mark)
 
 	err := car.store.db.QueryRow(query, mark).Scan(&a.ID, &a.Mark, &a.MaxSpeed, &a.Distance, &a.Handler, &a.Stock)
 	switch {

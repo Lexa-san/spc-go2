@@ -61,7 +61,7 @@ func alertTokenGenerate(api *APIServer, writer http.ResponseWriter, err error) {
 }
 
 func alertCarDoesNotExist(api *APIServer, writer http.ResponseWriter) {
-	api.logger.Info("Can not find article with that ID in database")
+	api.logger.Info("Can not find car with that ID in database")
 	msg := Message{
 		StatusCode: 404,
 		Message:    "Car with that mark not found",
@@ -69,5 +69,17 @@ func alertCarDoesNotExist(api *APIServer, writer http.ResponseWriter) {
 	}
 
 	writer.WriteHeader(404)
+	json.NewEncoder(writer).Encode(msg)
+}
+
+func alertCarAlreadyExist(api *APIServer, writer http.ResponseWriter) {
+	api.logger.Info("Car with that mark exists in database")
+	msg := Message{
+		StatusCode: 400,
+		Message:    "Car with that mark exists",
+		IsError:    true,
+	}
+
+	writer.WriteHeader(400)
 	json.NewEncoder(writer).Encode(msg)
 }

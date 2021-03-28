@@ -70,6 +70,9 @@ func (s *APIServer) configureRouter() {
 	s.router.Handle(prefix+"/auto/{mark}", middleware.JwtMiddleware.Handler(
 		http.HandlerFunc(s.GetCarByMark),
 	)).Methods("GET")
+	s.router.Handle(prefix+"/auto/{mark}", middleware.JwtMiddleware.Handler(
+		http.HandlerFunc(s.CreateCar),
+	)).Methods("POST")
 
 	////
 	//s.router.HandleFunc(prefix+"/articles"+"/{id}", s.DeleteArticleById).Methods("DELETE")
