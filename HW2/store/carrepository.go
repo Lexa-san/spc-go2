@@ -1,6 +1,7 @@
 package store
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 
@@ -95,10 +96,12 @@ func (car *CarRepository) SelectOneById(id int) (*models.Car, bool, error) {
 		"FROM %s as c", tableCar)
 
 	err := car.store.db.QueryRow(query).Scan(&a.ID, &a.Mark, &a.MaxSpeed, &a.Distance, &a.Handler, &a.Stock)
-	if err != nil {
+	switch {
+	case err == sql.ErrNoRows:
+		return &a, false, nil
+	case err != nil:
 		return &a, false, err
 	}
 
 	return &a, true, nil
-
 }

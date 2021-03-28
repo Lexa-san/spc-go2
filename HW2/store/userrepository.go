@@ -1,6 +1,7 @@
 package store
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 
@@ -12,12 +13,12 @@ type UserRepository struct {
 }
 
 var (
-	tableUser string = "user"
+	tableUser string = "users"
 )
 
 //Create user in database
 func (ur *UserRepository) Create(u *models.User) (*models.User, error) {
-	query := fmt.Sprintf("INSERT INTO %s (username, password) VALUES ($1, $2) RETURNING id", tableUser)
+	query := fmt.Sprintf("INSERT INTO %s (login, password) VALUES ($1, $2) RETURNING user_id", tableUser)
 	if err := ur.store.db.QueryRow(
 		query,
 		u.Username,
@@ -28,22 +29,25 @@ func (ur *UserRepository) Create(u *models.User) (*models.User, error) {
 	return u, nil
 }
 
-//Find by login
-func (ur *UserRepository) FindByLogin(login string) (*models.User, bool, error) {
-	users, err := ur.SelectAll()
-	var founded bool
-	if err != nil {
-		return nil, founded, err
+//Select one User from DB
+func (ur *UserRepository) SelectOneByLogin(login string) (*models.User, bool, error) {
+	a := models.User{}
+	query := fmt.Sprintf("SELECT "+
+		"c.user_id, "+
+		"c.login, "+
+		"c.password "+
+		"FROM %s as c "+
+		"where c.login ilike $1", tableUser)
+	log.Println(query)
+
+	err := ur.store.db.QueryRow(query, login).Scan(&a.ID, &a.Username, &a.Password)
+	switch {
+	case err == sql.ErrNoRows:
+		return &a, false, nil
+	case err != nil:
+		return &a, false, err
 	}
-	var userFinded *models.User
-	for _, u := range users {
-		if u.Username == login {
-			userFinded = u
-			founded = true
-			break
-		}
-	}
-	return userFinded, founded, nil
+	return &a, true, nil
 }
 
 //Select All
@@ -67,3 +71,21 @@ func (ur *UserRepository) SelectAll() ([]*models.User, error) {
 	return users, nil
 
 }
+
+//Find by login
+//func (ur *UserRepository) FindByLogin(login string) (*models.User, bool, error) {
+//	users, err := ur.SelectAll()
+//	var founded bool
+//	if err != nil {
+//		return nil, founded, err
+//	}
+//	var userFinded *models.User
+//	for _, u := range users {
+//		if u.Username == login {
+//			userFinded = u
+//			founded = true
+//			break
+//		}
+//	}
+//	return userFinded, founded, nil
+//}

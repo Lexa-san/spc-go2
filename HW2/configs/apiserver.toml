@@ -1,5 +1,9 @@
+[app]
 bind_addr = ":8080"
 log_level = "debug"
 
 [store]
-database_url ="host=localhost port=5432 sslmode=disable dbname=alexeysolovev user=alexeysolovev password=alexeysolovev"
+database_url = "host=localhost port=5432 sslmode=disable dbname=alexeysolovev user=alexeysolovev password=alexeysolovev"
+
+[auth]
+jwt_secret_key = "sdjf[wefjm09823u837rtydkjfh"
