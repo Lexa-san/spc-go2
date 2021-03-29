@@ -1,0 +1,909 @@
+{
+	"info": {
+		"_postman_id": "6245fb7e-7d97-41fb-a9f4-f0615f00a2ac",
+		"name": "spc_go2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "3.Trash_API",
+			"item": [
+				{
+					"name": "GET All Pizzas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}/pizzas",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"pizzas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Pizza by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}/pizza/4",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"pizza",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "4.SemiTrash_API",
+			"item": [
+				{
+					"name": "GET All Books",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}{{API_VER}}/books",
+							"host": [
+								"{{DOMAIN}}{{API_VER}}"
+							],
+							"path": [
+								"books"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Book by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}{{API_VER}}/book/2",
+							"host": [
+								"{{DOMAIN}}{{API_VER}}"
+							],
+							"path": [
+								"book",
+								"2"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE Book by ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}{{API_VER}}/book/4",
+							"host": [
+								"{{DOMAIN}}{{API_VER}}"
+							],
+							"path": [
+								"book",
+								"4"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE New Book",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 2,\n    \"title\": \"some new book 3\",\n    \"author\": {\n        \"name\": \"Vasya\",\n        \"last_name\": \"Pupkin\",\n        \"born_year\": 1992\n    },\n    \"year_published\": 2021\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DOMAIN}}{{API_VER}}/book",
+							"host": [
+								"{{DOMAIN}}{{API_VER}}"
+							],
+							"path": [
+								"book"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE New Book",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 10,\n    \"title\": \"one more some new book 2\",\n    \"author\": {\n        \"name\": \"Vasy2a\",\n        \"last_name\": \"Pupkin2\",\n        \"born_year\": 1990\n    },\n    \"year_published\": 2020\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DOMAIN}}{{API_VER}}/book/2",
+							"host": [
+								"{{DOMAIN}}{{API_VER}}"
+							],
+							"path": [
+								"book",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "HW1",
+			"item": [
+				{
+					"name": "GET All Items",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}{{API_VER}}/items",
+							"host": [
+								"{{DOMAIN}}{{API_VER}}"
+							],
+							"path": [
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Item by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}{{API_VER}}/item/2",
+							"host": [
+								"{{DOMAIN}}{{API_VER}}"
+							],
+							"path": [
+								"item",
+								"2"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE Item by ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}{{API_VER}}/item/2",
+							"host": [
+								"{{DOMAIN}}{{API_VER}}"
+							],
+							"path": [
+								"item",
+								"2"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE New Item",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\" : \"New Item2\",\n    \"amount\" : 200,\n    \"price\" : 13.55\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DOMAIN}}{{API_VER}}/item/2",
+							"host": [
+								"{{DOMAIN}}{{API_VER}}"
+							],
+							"path": [
+								"item",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE New Book",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\" : \"one more New Item\",\n    \"amount\" : 200,\n    \"price\" : 22.65\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DOMAIN}}{{API_VER}}/item/1",
+							"host": [
+								"{{DOMAIN}}{{API_VER}}"
+							],
+							"path": [
+								"item",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "9.TaskSW",
+			"item": [
+				{
+					"name": "GET Solve Quadratic",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}{{API_VER}}/solve",
+							"host": [
+								"{{DOMAIN}}{{API_VER}}"
+							],
+							"path": [
+								"solve"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST Grab Quadratic",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"A\" : 10,\n    \"B\" : 20,\n    \"C\" : 30\n}"
+						},
+						"url": {
+							"raw": "{{DOMAIN}}{{API_VER}}/grab",
+							"host": [
+								"{{DOMAIN}}{{API_VER}}"
+							],
+							"path": [
+								"grab"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "10.JWTAuth",
+			"item": [
+				{
+					"name": "get All articles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/articles",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"articles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create article",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\" : \"Third article\", \n    \"author\" : \"Alex Ivanov\",\n    \"content\" : \"New content for third article\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/articles",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"articles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get article by Id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6dHJ1ZSwiZXhwIjoxNjE2NjE3NDAzLCJuYW1lIjoiYWRtaW4ifQ.mP33DwtCDqQzA0cs9tYOEKtfG5N_xuWaGxT7IqiwTI8",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/articles/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"articles",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update Article by ID",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\" : \"Updated title\",\r\n    \"author\" : \"Updated Author\",\r\n    \"content\" : \"Updated content\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/articles/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"articles",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete article by id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/articles/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"articles",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register user",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"login\" : \"admin\",\r\n    \"password\" : \"admin\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/user/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "auth",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"login\" : \"admin\",\r\n    \"password\" : \"admin\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/user/auth",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"auth"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "HW2",
+			"item": [
+				{
+					"name": "Test API",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}{{API_VER}}",
+							"host": [
+								"{{DOMAIN}}{{API_VER}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register New User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"admin3\",\n    \"password\": \"admin3\"\n}"
+						},
+						"url": {
+							"raw": "{{DOMAIN}}{{API_VER}}/register",
+							"host": [
+								"{{DOMAIN}}{{API_VER}}"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Auth User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"admin3\",\n    \"password\": \"admin3\"\n}"
+						},
+						"url": {
+							"raw": "{{DOMAIN}}{{API_VER}}/auth",
+							"host": [
+								"{{DOMAIN}}{{API_VER}}"
+							],
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Cars",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}{{API_VER}}/stock",
+							"host": [
+								"{{DOMAIN}}{{API_VER}}"
+							],
+							"path": [
+								"stock"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Car By Mark",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}{{API_VER}}/auto/mark22",
+							"host": [
+								"{{DOMAIN}}{{API_VER}}"
+							],
+							"path": [
+								"auto",
+								"mark22"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create New Car",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"mark\": \"mark2\",\n    \"max_speed\": 333,\n    \"distance\": 444,\n    \"handler\": \"BFG\",\n    \"stock\": \"Germany\"\n}"
+						},
+						"url": {
+							"raw": "{{DOMAIN}}{{API_VER}}/auto/mark2",
+							"host": [
+								"{{DOMAIN}}{{API_VER}}"
+							],
+							"path": [
+								"auto",
+								"mark2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Car",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"mark\": \"mark22\",\n    \"max_speed\": 3333,\n    \"distance\": 4444,\n    \"handler\": \"BFGG\",\n    \"stock\": \"Germanyy\"\n}"
+						},
+						"url": {
+							"raw": "{{DOMAIN}}{{API_VER}}/auto/mark2",
+							"host": [
+								"{{DOMAIN}}{{API_VER}}"
+							],
+							"path": [
+								"auto",
+								"mark2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Car",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}{{API_VER}}/auto/{mark}",
+							"host": [
+								"{{DOMAIN}}{{API_VER}}"
+							],
+							"path": [
+								"auto",
+								"{mark}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "11.TFDp1",
+			"item": [
+				{
+					"name": "Test 0",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}/factorial?num=0",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"factorial"
+							],
+							"query": [
+								{
+									"key": "num",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 1",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}/factorial?num=1",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"factorial"
+							],
+							"query": [
+								{
+									"key": "num",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 3",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}/factorial?num=0",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"factorial"
+							],
+							"query": [
+								{
+									"key": "num",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "GinGormAPI",
+			"item": [
+				{
+					"name": "GET All Articles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}{{API_VER}}/article",
+							"host": [
+								"{{DOMAIN}}{{API_VER}}"
+							],
+							"path": [
+								"article"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "DOMAIN",
+			"value": "http://localhost:8080"
+		},
+		{
+			"key": "API_VER",
+			"value": "/api/v1"
+		},
+		{
+			"key": "TOKEN",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6dHJ1ZSwiZXhwIjoxNjE3MDU2NzM2LCJuYW1lIjoiYWRtaW4zIn0.9V5sjyTIUmehFN7ipmiCgWN9PVam0iKMwQR9V_tSzsQ"
+		}
+	]
+}
