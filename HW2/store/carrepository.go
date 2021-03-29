@@ -26,23 +26,6 @@ func (car *CarRepository) Create(c *models.Car) (*models.Car, error) {
 	return c, nil
 }
 
-//For DELETE request
-func (car *CarRepository) DeleteById(mark string) (*models.Car, error) {
-	cCar, ok, err := car.SelectOneByMark(mark)
-	if err != nil {
-		return nil, err
-	}
-	if ok {
-		query := fmt.Sprintf("delete from %s where mark=$1", tableCar)
-		_, err = car.store.db.Exec(query, mark)
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	return cCar, nil
-}
-
 //Helper fo Find by id and GET by id request
 //func (car *CarRepository) FindCarById(id int) (*models.Car, bool, error) {
 //	cCars, err := car.SelectAll()
@@ -107,8 +90,8 @@ func (car *CarRepository) SelectOneByMark(mark string) (*models.Car, bool, error
 	return &a, true, nil
 }
 
-//Update Car
-func (car *CarRepository) Update(c *models.Car, id int) (bool, error) {
+//UpdateByID Car
+func (car *CarRepository) UpdateByID(c *models.Car, id int) (bool, error) {
 	query := fmt.Sprintf("UPDATE %s SET "+
 		"mark = $2, "+
 		"max_speed = $3, "+
@@ -125,9 +108,28 @@ func (car *CarRepository) Update(c *models.Car, id int) (bool, error) {
 	if err != nil {
 		return false, err
 	}
-	if count > 0 {
-		return true, nil
+	if count == 0 {
+		return false, nil
 	}
 
-	return false, nil
+	return true, nil
+}
+
+//DeleteByID Car
+func (car *CarRepository) DeleteById(id int) (bool, error) {
+	query := fmt.Sprintf("DELETE from %s WHERE car_id = $1", tableCar)
+	res, err := car.store.db.Exec(query, id)
+	if err != nil {
+		return false, err
+	}
+
+	count, err := res.RowsAffected()
+	if err != nil {
+		return false, err
+	}
+	if count == 0 {
+		return false, nil
+	}
+
+	return true, nil
 }

@@ -224,7 +224,7 @@ func (api *APIServer) CreateCar(writer http.ResponseWriter, req *http.Request) {
 
 func (api *APIServer) UpdateCar(writer http.ResponseWriter, req *http.Request) {
 	initHeaders(writer)
-	api.logger.Info("Create Car POST /auto/{mark}")
+	api.logger.Info("UpdateByID Car PUT /auto/{mark}")
 	var err error
 	var ok bool
 
@@ -246,7 +246,7 @@ func (api *APIServer) UpdateCar(writer http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	ok, err = api.store.Car().Update(&car, foundCar.ID)
+	ok, err = api.store.Car().UpdateByID(&car, foundCar.ID)
 	if err != nil {
 		alertDBError(api, writer, err)
 		return
@@ -258,6 +258,42 @@ func (api *APIServer) UpdateCar(writer http.ResponseWriter, req *http.Request) {
 	msg := Message{
 		IsError:    false,
 		Message:    "Auto updated",
+		StatusCode: 202,
+	}
+	writer.WriteHeader(202)
+	json.NewEncoder(writer).Encode(msg)
+
+}
+
+func (api *APIServer) DeleteCar(writer http.ResponseWriter, req *http.Request) {
+	initHeaders(writer)
+	api.logger.Info("DeleteByID Car DELETE /auto/{mark}")
+	var err error
+	var ok bool
+
+	mark := mux.Vars(req)["mark"]
+	foundCar, ok, err := api.store.Car().SelectOneByMark(mark)
+	if err != nil {
+		alertDBError(api, writer, err)
+		return
+	}
+	if !ok {
+		alertCarDoesNotExist(api, writer)
+		return
+	}
+
+	ok, err = api.store.Car().DeleteById(foundCar.ID)
+	if err != nil {
+		alertDBError(api, writer, err)
+		return
+	}
+	if !ok {
+		alertCarDoesNotExist(api, writer)
+		return
+	}
+	msg := Message{
+		IsError:    false,
+		Message:    "Auto deleted",
 		StatusCode: 202,
 	}
 	writer.WriteHeader(202)
