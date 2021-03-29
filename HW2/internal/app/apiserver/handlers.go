@@ -221,3 +221,46 @@ func (api *APIServer) CreateCar(writer http.ResponseWriter, req *http.Request) {
 	json.NewEncoder(writer).Encode(a)
 
 }
+
+func (api *APIServer) UpdateCar(writer http.ResponseWriter, req *http.Request) {
+	initHeaders(writer)
+	api.logger.Info("Create Car POST /auto/{mark}")
+	var err error
+	var ok bool
+
+	mark := mux.Vars(req)["mark"]
+	foundCar, ok, err := api.store.Car().SelectOneByMark(mark)
+	if err != nil {
+		alertDBError(api, writer, err)
+		return
+	}
+	if !ok {
+		alertCarDoesNotExist(api, writer)
+		return
+	}
+
+	var car models.Car
+	err = json.NewDecoder(req.Body).Decode(&car)
+	if err != nil {
+		alertBadJSON(api, writer, err)
+		return
+	}
+
+	ok, err = api.store.Car().Update(&car, foundCar.ID)
+	if err != nil {
+		alertDBError(api, writer, err)
+		return
+	}
+	if !ok {
+		alertCarDoesNotExist(api, writer)
+		return
+	}
+	msg := Message{
+		IsError:    false,
+		Message:    "Auto updated",
+		StatusCode: 202,
+	}
+	writer.WriteHeader(202)
+	json.NewEncoder(writer).Encode(msg)
+
+}

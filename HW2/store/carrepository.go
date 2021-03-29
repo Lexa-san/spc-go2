@@ -106,3 +106,28 @@ func (car *CarRepository) SelectOneByMark(mark string) (*models.Car, bool, error
 
 	return &a, true, nil
 }
+
+//Update Car
+func (car *CarRepository) Update(c *models.Car, id int) (bool, error) {
+	query := fmt.Sprintf("UPDATE %s SET "+
+		"mark = $2, "+
+		"max_speed = $3, "+
+		"distance = $4, "+
+		"stock = $5, "+
+		"handler = $6 "+
+		"WHERE car_id = $1", tableCar)
+	res, err := car.store.db.Exec(query, id, c.Mark, c.MaxSpeed, c.Distance, c.Stock, c.Handler)
+	if err != nil {
+		return false, err
+	}
+
+	count, err := res.RowsAffected()
+	if err != nil {
+		return false, err
+	}
+	if count > 0 {
+		return true, nil
+	}
+
+	return false, nil
+}
